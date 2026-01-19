@@ -1,0 +1,34 @@
+experiment:
+  name: "code-summarization-baseline"
+  seed: 42
+  output_dir: "./outputs"
+
+data:
+  dataset_name: "code_search_net"
+  language: "python"
+  max_source_length: 256
+  max_target_length: 128
+  train_size: 10000  # 使用子集加速实验
+  val_size: 1000
+  test_size: 1000
+  # 本地数据路径
+  local_raw_data: "./data/raw/code_x_glue_ct_code_to_text"
+  local_processed_data: "./data/processed"
+
+model:
+  name: "Salesforce/codet5-small"  # 或 "microsoft/codebert-base"
+  learning_rate: 0.00005
+  batch_size: 64  # 从16增加到64，充分利用GPU（RTX 4060 8GB）
+  num_epochs: 5
+  warmup_steps: 500
+  weight_decay: 0.01
+  gradient_accumulation_steps: 1  # 如果batch_size=64显存不够，可以用batch_size=32 + gradient_accumulation_steps=2
+
+evaluation:
+  beam_size: 5
+  num_beams: 5
+  metrics: ["bleu", "meteor", "rouge"]
+  
+logging:
+  log_level: "INFO"
+  log_file: "experiment.log"

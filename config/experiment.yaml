@@ -1,0 +1,44 @@
+experiment:
+  name: "code-summarization-quick-experiment"
+  seed: 42
+  output_dir: "./outputs_quick"
+
+data:
+  dataset_name: "code_search_net"
+  language: "python"
+  max_source_length: 256
+  max_target_length: 128
+  
+  # 快速实验配置 - 1.5小时内完成
+  # 目标：数据处理(5分钟) + 训练(75分钟) + 评估(10分钟)
+  train_size: 80000        # 约80K训练样本，5 epochs约75分钟
+  val_size: 5000           # 5K验证样本
+  test_size: 5000          # 5K测试样本
+  
+  local_raw_data: "./data/raw/code_x_glue_ct_code_to_text"
+  local_processed_data: "./data/processed_quick"
+
+model:
+  name: "Salesforce/codet5-small"
+  learning_rate: 0.00005
+  
+  # 优化配置 - Windows + RTX 4060
+  batch_size: 32              # 平衡速度和效果
+  num_epochs: 5
+  warmup_steps: 500           # 减少warmup步数
+  weight_decay: 0.01
+  gradient_accumulation_steps: 1
+  
+  # 关键优化
+  fp16: true                  # 混合精度训练
+  dataloader_num_workers: 0   # Windows必须为0
+  dataloader_pin_memory: true
+
+evaluation:
+  beam_size: 5
+  num_beams: 5
+  metrics: ["bleu", "meteor", "rouge"]
+  
+logging:
+  log_level: "INFO"
+  log_file: "experiment_quick.log"
