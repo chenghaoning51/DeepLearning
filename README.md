@@ -61,14 +61,14 @@ pip install -r requirements.txt
 ### 方式1: 自动下载（推荐）
 运行主程序时会自动下载CodeSearchNet数据集：
 ```bash
-python main.py --config config/quick_experiment.yaml
+python main.py --config config/experiment.yaml
 ```
 
 ### 方式2: 使用本地数据
 如果已有处理好的数据，修改配置文件中的路径：
 ```yaml
 data:
-  local_processed_data: "./data/processed_quick"
+  local_processed_data: "./data/processed"
 ```
 
 ## 使用方法
@@ -77,27 +77,27 @@ data:
 
 运行完整流程（数据处理 + 训练 + 评估）：
 ```bash
-python main.py --config config/quick_experiment.yaml
+python main.py --config config/experiment.yaml
 ```
 
 ### 仅训练
 ```bash
-python main.py --config config/quick_experiment.yaml --mode train
+python main.py --config config/experiment.yaml --mode train
 ```
 
 ### 仅评估
 ```bash
-python main.py --config config/quick_experiment.yaml --mode evaluate
+python main.py --config config/experiment.yaml --mode evaluate
 ```
 
 ### 仅数据处理
 ```bash
-python main.py --config config/quick_experiment.yaml --mode process_data
+python main.py --config config/experiment.yaml --mode process_data
 ```
 
 ## 配置说明
 
-主要配置文件: `config/quick_experiment.yaml`
+主要配置文件: `config/experiment.yaml`
 
 ### 关键参数
 
@@ -133,11 +133,10 @@ model:
 期末作业/
 ├── config/                      # 配置文件
 │   ├── default.yaml            # 默认配置
-│   └── quick_experiment.yaml   # 快速实验配置
+│   └── experiment.yaml         # 实验配置
 ├── data/                        # 数据目录
 │   ├── raw/                    # 原始数据
-│   ├── processed_quick/        # 处理后的数据
-│   └── processed_full/         # 完整数据集（可选）
+│   └── processed/              # 处理后的数据
 ├── src/                         # 源代码
 │   ├── config/                 # 配置管理
 │   ├── data/                   # 数据处理
@@ -145,22 +144,25 @@ model:
 │   ├── evaluation/             # 评估模块
 │   ├── utils/                  # 工具函数
 │   └── visualization/          # 可视化
-├── outputs_quick/               # 实验输出
+├── outputs/                     # 实验输出
 │   ├── best_model/             # 最佳模型
+│   ├── checkpoint-*/           # 训练检查点
 │   ├── experiment_summary.json # 实验摘要
-│   └── training_history.json   # 训练历史
+│   ├── training_history.json   # 训练历史
+│   └── config_backup.yaml      # 配置备份
 ├── logs/                        # 日志文件
 ├── tests/                       # 测试代码
 ├── main.py                      # 主程序入口
 ├── requirements.txt             # 依赖列表
 ├── 实验报告.md                  # 详细实验报告
 ├── 期末作业.md                  # 作业要求
+├── 期末作业.pdf                 # 作业要求PDF
 └── README.md                    # 本文件
 ```
 
 ## 输出说明
 
-训练完成后，输出目录 `outputs_quick/` 包含：
+训练完成后，输出目录 `outputs/` 包含：
 
 - `best_model/`: 最佳模型权重
 - `checkpoint-*/`: 训练检查点
